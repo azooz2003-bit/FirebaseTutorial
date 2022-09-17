@@ -9,20 +9,31 @@ import SwiftUI
 
 struct ContentView: View {
     let dim = UIScreen.main.bounds
+    
+    @ObservedObject var notes: Notes = Notes()
+    
+    @State var newNote = ""
+    
     var body: some View {
-        ZStack {
-            VStack {
-                ScrollView {
-                    TextField("Enter a Text", text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/.constant("")/*@END_MENU_TOKEN@*/).background(.red)
-                }
-            }.border(.black)
-            
-            Button (action: {
+        
+        VStack {
+            ScrollView {
                 
-            }) {
-                Label("", systemImage: "plus.circle.fill").frame(width:dim.width * 0.3, height:dim.height * 0.3,  alignment: .center)
-            }.frame(width:dim.width * 0.3, height:dim.height * 0.3, alignment: .center)
+            }
+            
+            HStack {
+                TextField("Enter a Text", text: $newNote).frame(height: dim.height*0.08, alignment: .center).padding(.leading).background(.orange).cornerRadius(7).shadow(radius: 5)
+                Button (action: {
+                    notes.append(text: newNote)
+                }) {
+                    Label("", systemImage: "plus.circle.fill").font(.system(size: dim.width*0.12)).foregroundColor(.orange)
+                }.shadow(radius: 2).padding(.leading)
+            }.padding(.leading).padding(.trailing)
         }
+        
+        
+            
+        
     }
 }
 

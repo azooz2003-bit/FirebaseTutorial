@@ -15,6 +15,7 @@
 		373D784F28D614ED0011B39B /* swiftui_tutorialTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D784E28D614ED0011B39B /* swiftui_tutorialTests.swift */; };
 		373D785928D614ED0011B39B /* swiftui_tutorialUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D785828D614ED0011B39B /* swiftui_tutorialUITests.swift */; };
 		373D785B28D614ED0011B39B /* swiftui_tutorialUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D785A28D614ED0011B39B /* swiftui_tutorialUITestsLaunchTests.swift */; };
+		A30A648128D6289700180CAC /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30A648028D6289700180CAC /* Note.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		373D785428D614ED0011B39B /* swiftui-tutorialUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "swiftui-tutorialUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		373D785828D614ED0011B39B /* swiftui_tutorialUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftui_tutorialUITests.swift; sourceTree = "<group>"; };
 		373D785A28D614ED0011B39B /* swiftui_tutorialUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftui_tutorialUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		A30A648028D6289700180CAC /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 				20633E5028D61AD900266C3C /* Notes.swift */,
 				373D784128D614ED0011B39B /* Assets.xcassets */,
 				373D784328D614ED0011B39B /* Preview Content */,
+				A30A648028D6289700180CAC /* Note.swift */,
 			);
 			path = "swiftui-tutorial";
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 				373D784028D614EA0011B39B /* ContentView.swift in Sources */,
 				373D783E28D614EA0011B39B /* swiftui_tutorialApp.swift in Sources */,
 				20633E5128D61AD900266C3C /* Notes.swift in Sources */,
+				A30A648128D6289700180CAC /* Note.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

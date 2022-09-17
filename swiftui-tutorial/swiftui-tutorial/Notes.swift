@@ -7,12 +7,10 @@
 
 import Foundation
 
-class Notes {
-    var text : String = ""
-    var id : Int = 0
+class Notes: ObservableObject {
+    @Published var notes: [Note] = []
     
-    init(text: String, id: Int) {
-        self.text = text
-        self.id = id
+    func append(text: String) {
+        notes.append(Note(text: text, id: notes.endIndex + 1))
     }
 }

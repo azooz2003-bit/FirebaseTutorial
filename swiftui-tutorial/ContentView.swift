@@ -18,13 +18,16 @@ struct ContentView: View {
         
         VStack {
             ScrollView {
-                
+                ForEach(notes.notes, id: \.self.id) { note in
+                    Text("Hello")
+                }
             }
             
             HStack {
                 TextField("Enter a Text", text: $newNote).frame(height: dim.height*0.08, alignment: .center).padding(.leading).background(.orange).cornerRadius(7).shadow(radius: 5)
                 Button (action: {
                     notes.append(text: newNote)
+                    newNote = ""
                 }) {
                     Label("", systemImage: "plus.circle.fill").font(.system(size: dim.width*0.12)).foregroundColor(.orange)
                 }.shadow(radius: 2).padding(.leading)

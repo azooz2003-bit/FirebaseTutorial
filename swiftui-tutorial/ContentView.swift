@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+    let dim = UIScreen.main.bounds
     var body: some View {
         ZStack {
             VStack {
@@ -20,8 +20,8 @@ struct ContentView: View {
             Button (action: {
                 
             }) {
-                Label("", systemImage: "plus.circle.fill")
-            }
+                Label("", systemImage: "plus.circle.fill").frame(width:dim.width * 0.3, height:dim.height * 0.3,  alignment: .center)
+            }.frame(width:dim.width * 0.3, height:dim.height * 0.3, alignment: .center)
         }
     }
 }

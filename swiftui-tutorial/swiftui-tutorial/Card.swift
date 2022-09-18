@@ -19,7 +19,7 @@ struct Card: View {
         Text(textToDisplay)
             .frame(width: dim.width*0.8, alignment: .center)
             .padding()
-            .background(.blue)
+            .background(.yellow)
             .cornerRadius(7)
             .foregroundColor(.white)
             

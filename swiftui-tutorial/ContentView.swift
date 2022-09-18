@@ -13,10 +13,12 @@ struct ContentView: View {
     @ObservedObject var notes: Notes = Notes()
     
     @State var newNote = ""
+    @State var isEmpty = false
     
     var body: some View {
-        
+                
         VStack {
+            Text("Notes App").font(.system(size: dim.width*0.1, design: .rounded)).bold()
             ScrollView {
                 ForEach(notes.notes, id: \.self.id) { note in
 //                    Text("as")
@@ -28,7 +30,7 @@ struct ContentView: View {
             HStack {
                 if #available(iOS 16.0, *) {
                     TextField("Enter a Text", text: $newNote, axis: .vertical)
-                        .multilineTextAlignment(.center)
+                        .multilineTextAlignment(.leading)
                         .frame(height: dim.height*0.08, alignment: .center)
                         .padding()
                         .background(.orange)
@@ -44,11 +46,22 @@ struct ContentView: View {
                 }
                     
                 Button (action: {
-                    notes.append(text: newNote)
-                    newNote = ""
+                    
+                    if (newNote.isEmpty) {
+                        isEmpty = true
+                    } else {
+                        notes.append(text: newNote)
+                        newNote = ""
+                    }
+                                        
                 }) {
                     Label("", systemImage: "plus.circle.fill").font(.system(size: dim.width*0.12)).foregroundColor(.orange)
-                }.shadow(radius: 2).padding(.leading)
+                }.shadow(radius: 2).padding(.leading).alert("Empty note!", isPresented: $isEmpty) {
+                    Button("Ok", role: .cancel) {
+                        isEmpty = false
+                    }
+                    
+                }
             }.padding(.leading).padding(.trailing)
         }.padding(.top)
         

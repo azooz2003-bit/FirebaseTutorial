@@ -19,12 +19,30 @@ struct ContentView: View {
         VStack {
             ScrollView {
                 ForEach(notes.notes, id: \.self.id) { note in
-                    Text("Hello")
+//                    Text("as")
+                    Card(text: note.text)
+                    
                 }
             }
             
             HStack {
-                TextField("Enter a Text", text: $newNote).frame(height: dim.height*0.08, alignment: .center).padding(.leading).background(.orange).cornerRadius(7).shadow(radius: 5)
+                if #available(iOS 16.0, *) {
+                    TextField("Enter a Text", text: $newNote, axis: .vertical)
+                        .multilineTextAlignment(.center)
+                        .frame(height: dim.height*0.08, alignment: .center)
+                        .padding()
+                        .background(.orange)
+                        .cornerRadius(7)
+                        .foregroundColor(.white)
+                } else {
+                    TextField("Enter a Text", text: $newNote)
+                        .frame(height: dim.height*0.08, alignment: .center)
+                        .padding()
+                        .background(.orange)
+                        .cornerRadius(7)
+                        .foregroundColor(.white)
+                }
+                    
                 Button (action: {
                     notes.append(text: newNote)
                     newNote = ""
@@ -32,7 +50,7 @@ struct ContentView: View {
                     Label("", systemImage: "plus.circle.fill").font(.system(size: dim.width*0.12)).foregroundColor(.orange)
                 }.shadow(radius: 2).padding(.leading)
             }.padding(.leading).padding(.trailing)
-        }
+        }.padding(.top)
         
         
             

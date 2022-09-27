@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Card: View {
     var textToDisplay : String = ""
-    let dim = UIScreen.main.bounds
+    //let dim = UIScreen.main.bounds
     
     init(text: String) {
         self.textToDisplay = text
@@ -17,7 +17,7 @@ struct Card: View {
     
     var body: some View {
         Text(textToDisplay)
-            .frame(width: dim.width*0.8, alignment: .center)
+            .frame(width: 300, alignment: .center)
             .padding()
             .background(.yellow)
             .cornerRadius(7)

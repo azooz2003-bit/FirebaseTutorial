@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    let dim = UIScreen.main.bounds
+    //let dim = UIScreen.main.bounds
     
     @ObservedObject var notes: Notes = Notes()
     
@@ -18,7 +18,7 @@ struct ContentView: View {
     var body: some View {
                 
         VStack {
-            Text("Notes App").font(.system(size: dim.width*0.1, design: .rounded)).bold()
+            Text("Notes App").font(.system(size: 40, design: .rounded)).bold()
             ScrollView {
                 ForEach(notes.notes, id: \.self.id) { note in
 //                    Text("as")
@@ -28,23 +28,15 @@ struct ContentView: View {
             }
             
             HStack {
-                if #available(iOS 16.0, *) {
-                    TextField("Enter a Text", text: $newNote, axis: .vertical)
-                        .multilineTextAlignment(.leading)
-                        .frame(height: dim.height*0.08, alignment: .center)
-                        .padding()
-                        .background(.orange)
-                        .cornerRadius(7)
-                        .foregroundColor(.white)
-                } else {
-                    TextField("Enter a Text", text: $newNote)
-                        .frame(height: dim.height*0.08, alignment: .center)
-                        .padding()
-                        .background(.orange)
-                        .cornerRadius(7)
-                        .foregroundColor(.white)
-                }
-                    
+        
+                TextField("Enter a note", text: $newNote)
+                    .frame(height: 60, alignment: .center)
+                    .padding()
+                    .background(Color("AccentColor"))
+                    .cornerRadius(7)
+                    .foregroundColor(.white)
+
+        
                 Button (action: {
                     
                     if (newNote.isEmpty) {
@@ -55,8 +47,8 @@ struct ContentView: View {
                     }
                                         
                 }) {
-                    Label("", systemImage: "plus.circle.fill").font(.system(size: dim.width*0.12)).foregroundColor(.orange)
-                }.shadow(radius: 2).padding(.leading).alert("Empty note!", isPresented: $isEmpty) {
+                    Label("", systemImage: "plus.circle.fill").font(.system(size: 50)).foregroundColor(Color("AccentColor"))
+                }.padding(.leading).alert("Empty note!", isPresented: $isEmpty) {
                     Button("Ok", role: .cancel) {
                         isEmpty = false
                     }

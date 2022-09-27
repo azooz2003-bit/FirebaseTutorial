@@ -17,6 +17,7 @@
 		373D785928D614ED0011B39B /* swiftui_tutorialUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D785828D614ED0011B39B /* swiftui_tutorialUITests.swift */; };
 		373D785B28D614ED0011B39B /* swiftui_tutorialUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D785A28D614ED0011B39B /* swiftui_tutorialUITestsLaunchTests.swift */; };
 		A30A648128D6289700180CAC /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30A648028D6289700180CAC /* Note.swift */; };
+		A30D70A828E35F0C005E8EE1 /* SignUpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30D70A728E35F0C005E8EE1 /* SignUpScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		373D785828D614ED0011B39B /* swiftui_tutorialUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftui_tutorialUITests.swift; sourceTree = "<group>"; };
 		373D785A28D614ED0011B39B /* swiftui_tutorialUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftui_tutorialUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		A30A648028D6289700180CAC /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		A30D70A728E35F0C005E8EE1 /* SignUpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 		373D783C28D614EA0011B39B /* swiftui-tutorial */ = {
 			isa = PBXGroup;
 			children = (
+				A30D70A728E35F0C005E8EE1 /* SignUpScreen.swift */,
 				373D783D28D614EA0011B39B /* swiftui_tutorialApp.swift */,
 				373D783F28D614EA0011B39B /* ContentView.swift */,
 				20633E5028D61AD900266C3C /* Notes.swift */,
@@ -267,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				373D784028D614EA0011B39B /* ContentView.swift in Sources */,
+				A30D70A828E35F0C005E8EE1 /* SignUpScreen.swift in Sources */,
 				373D783E28D614EA0011B39B /* swiftui_tutorialApp.swift in Sources */,
 				20633E5328D7641D00266C3C /* Card.swift in Sources */,
 				20633E5128D61AD900266C3C /* Notes.swift in Sources */,

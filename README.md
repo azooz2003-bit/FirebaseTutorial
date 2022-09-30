@@ -1,6 +1,8 @@
 # Notes App
 
-<img src="https://user-images.githubusercontent.com/67667005/193173031-3b25153f-516f-4eee-9a45-9743c5e2266c.png" width="350" align="middle">
+<img src="https://user-images.githubusercontent.com/67667005/193173031-3b25153f-516f-4eee-9a45-9743c5e2266c.png" width="350"> <img src="https://user-images.githubusercontent.com/67667005/193174020-c1b6014f-3c0d-40e2-a87b-91a11dbe093d.png" width="350">
+
+
 
 
 If you attended the code-from-scratch for this mini-project:

@@ -22,7 +22,7 @@ struct NotesPage: View {
             Text("MyNotes").font(.system(size: 40, design: .rounded)).bold()
             ScrollView {
                 
-                ForEach((user?.notes ?? []), id: \.self.id) { note in
+                ForEach((user!.notes), id: \.self.id) { note in
                     
                     Card(text: note.text)
                     

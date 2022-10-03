@@ -14,6 +14,7 @@ import SwiftUI
 class UserViewModel: ObservableObject {
     @Published var user: User? // will be set to nil if there's no actual data in it
     @Published var isAuthenticating: Bool = false
+    @Published var synced = false
     
     private let auth = Auth.auth()
     private let db = Firestore.firestore()
@@ -34,20 +35,29 @@ class UserViewModel: ObservableObject {
         }
         isAuthenticating = true
         
+        
         auth.signIn(withEmail: email, password: password) { [weak self] result, error in
+            
             // these variables are retrieved from Firebase for what we call the "completion", we will use them to set the closures, and handle error appropriately. Weak self is stated to allow instances to be released, like in the case of the result and error instances, and prevent an endless memory cycle.
             if result == nil || error != nil {
                 self?.isAuthenticating = false
                 completion(false)
                 return
             } else {
-                completion(true)
                 print((self?.uuid)!)
-                self?.sync()
-                //print(self!.user)
-                self?.isAuthenticating = false
+                 
+                self?.sync() { result in
+                    print("Sync done:")
+                    print(self?.user)
+                    self?.isAuthenticating = false
+                    completion(result)
+                }
+                
+                
+
             }
-            
+        
+       
             // guard is rly simple, the exact opposite of an if statement. It essentially says "if not ___". In this case if result is == to nil, meaning the boolean is false, it would execute the empty return. Otherwise, it would move on to the code after.
             // we used "async" to ensure that we're not blocking the code after it from running, so that we can perform two tasks simultaneously, FYI: this can slow performance, and can lead to the "race condition": when an app is dependent on order of code execution.
         }
@@ -70,10 +80,13 @@ class UserViewModel: ObservableObject {
                 completion(false)
                 return
             } else {
-                completion(true)
+                
                 self?.add()
                 //User(uuid: (self?.uuid)!,  notes: [])
-                self?.sync()
+                self?.sync() { result in
+                    completion(result)
+                    self?.isAuthenticating = false
+                }
                 self?.isAuthenticating = false
             }
               
@@ -93,23 +106,28 @@ class UserViewModel: ObservableObject {
         }
     }
     
-    func sync() {
+    func sync(completion: @escaping (Bool) -> Void) {
         if !userIsAuthenticated {
             print("pre-sync abort")
+            completion(false)
             return
         }
         db.collection("users").document(self.uuid!).getDocument { (document, error) in
             print(document!)
             if (document == nil || error != nil) {
                 print("Error pre-sync")
+                completion(false)
                 return
             }
+            
             do {
                 try self.user = document!.data(as: User.self)
                 print(try document!.data(as: User.self))
                 print(self.user)
+                completion(true)
             } catch {
                 print("SYNC ERROR: \(error)")
+                completion(false)
             }
         }
     }

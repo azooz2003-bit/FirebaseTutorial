@@ -7,18 +7,19 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct NotesPage: View {
     //let dim = UIScreen.main.bounds
-    
-    @ObservedObject var notes: Notes = Notes()
+        
+    @EnvironmentObject var userViewModel: UserViewModel
     
     @State var newNote = ""
     @State var isEmpty = false
     
     var body: some View {
+        let notes = userViewModel.user!.notes
                 
         VStack {
-            Text("Notes App").font(.system(size: 40, design: .rounded)).bold()
+            Text("MyNotes").font(.system(size: 40, design: .rounded)).bold()
             ScrollView {
                 ForEach(notes.notes, id: \.self.id) { note in
 //                    Text("as")
@@ -43,6 +44,7 @@ struct ContentView: View {
                         isEmpty = true
                     } else {
                         notes.append(text: newNote)
+                        userViewModel.add(userViewModel.user!)
                         newNote = ""
                     }
                                         
@@ -54,17 +56,18 @@ struct ContentView: View {
                     }
                     
                 }
-            }.padding(.leading).padding(.trailing)
+            }.padding()
         }.padding(.top)
         
         
             
         
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        NotesPage()
     }
 }

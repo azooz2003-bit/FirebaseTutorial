@@ -7,8 +7,8 @@
 
 import Foundation
 
-class Note: ObservableObject {
-    @Published var text : String = ""
+class Note: Codable {
+    var text : String = ""
     var id : Int = 0
     
     init(text: String, id: Int) {

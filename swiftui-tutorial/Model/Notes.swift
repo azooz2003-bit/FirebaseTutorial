@@ -8,9 +8,16 @@
 import Foundation
 
 class Notes: ObservableObject {
-    @Published var notes: [Note] = []
+    
+    @Published var notes: [Note] // MUST BE PUBLISHED
+    
+    init() {
+        self.notes = []
+    }
     
     func append(text: String) {
         notes.append(Note(text: text, id: notes.endIndex + 1))
+        
     }
+    
 }

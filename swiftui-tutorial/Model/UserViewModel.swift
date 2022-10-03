@@ -71,9 +71,8 @@ class UserViewModel: ObservableObject {
                 return
             } else {
                 completion(true)
-                self?.add()
+                self?.add(User(uuid: (self?.uuid)!,  notes: []))
                 self?.sync()
-                print(self?.user)
                 self?.isAuthenticating = false
             }
               
@@ -84,7 +83,7 @@ class UserViewModel: ObservableObject {
     func signOut(completion: @escaping (Bool) -> Void) {
         do {
             try auth.signOut()
-            self.user = User(uuid: "0", notes: [])
+            self.user = nil
             completion(true)
         } catch {
             // we can return a "closure" here to initiate an alert in the view that calls this function
@@ -105,9 +104,7 @@ class UserViewModel: ObservableObject {
                 return
             }
             do {
-                var data = document!.data()
-                self.user?.uuid = data!["uuid"] as! String
-                self.user?.notes = data!["notes"] as! [Note]
+                try self.user = document!.data(as: User.self)
                 print(try document!.data(as: User.self))
             } catch {
                 print("SYNC ERROR: \(error)")
@@ -115,7 +112,7 @@ class UserViewModel: ObservableObject {
         }
     }
     
-    func add() { // _ represents an unnamed parameter in swift, but here we're omitting the argument label by adding _. So that we can just use add(someUser) instead of add(user: someUser)
+    func add(_ user: User?) { // _ represents an unnamed parameter in swift, but here we're omitting the argument label by adding _. So that we can just use add(someUser) instead of add(user: someUser)
         if !userIsAuthenticated {
             print("pre-add abort")
             return

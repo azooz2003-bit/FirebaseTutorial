@@ -36,10 +36,9 @@ struct LoginScreen: View {
                 
                 Divider().padding(.leading).padding(.trailing)
                 
-                NavigationLink(destination: NotesPage().environmentObject(userViewModel), isActive: $isAuthenticatedAndSynced) {
+                NavigationLink(destination: NotesPage().environmentObject(userViewModel).navigationBarBackButtonHidden(true), isActive: $isAuthenticatedAndSynced) {
                     EmptyView()
-                }.navigationBarBackButtonHidden()
-                
+                }
                 Button(action: {
                     // do all backend stuff
                     

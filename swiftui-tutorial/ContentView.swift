@@ -10,16 +10,17 @@ import SwiftUI
 struct ContentView: View {
     //let dim = UIScreen.main.bounds
     
-    @ObservedObject var notes: Notes = Notes()
-    
+//    @ObservedObject var notes: Notes = Notes()
+    @EnvironmentObject var Notes: Notes
     @State var newNote = ""
     @State var isEmpty = false
+    
     
     var body: some View {
                 
         VStack {
             Text("Notes App").font(.system(size: 40, design: .rounded)).bold()
-            ScrollView {
+            ScrollView {                
                 ForEach(notes.notes, id: \.self.id) { note in
 //                    Text("as")
                     Card(text: note.text)

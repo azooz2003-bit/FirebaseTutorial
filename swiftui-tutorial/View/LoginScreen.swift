@@ -38,17 +38,20 @@ struct LoginScreen: View {
                 
                 NavigationLink(destination: NotesPage(), isActive: $isAuthenticatedAndSynced) {
                     EmptyView()
-                }
+                }.navigationBarBackButtonHidden()
                 
                 Button(action: {
                     // do all backend stuff
-                    DispatchQueue.main.sync {
-                        userViewModel.signIn(email: email, password: password) { noError in
-                            errorOccurred = !noError
+                    
+                    userViewModel.signIn(email: email, password: password) { success in
+                        if success {
+                            isAuthenticatedAndSynced = true
+                        } else {
+                            errorOccurred = true
                         }
                     }
                     
-                    isAuthenticatedAndSynced = userViewModel.userIsAuthenticatedAndSynced
+                    
                 }) {
                     
                     if (userViewModel.isAuthenticating) {
@@ -57,11 +60,15 @@ struct LoginScreen: View {
                         Label("Proceed", systemImage: "chevron.right.circle.fill").font(.system(size: 23))
                     }
                     
+                
+                    
                     
                 }.padding(.init(top: 50, leading: 0, bottom: 0, trailing: 0))
                     .disabled(textFieldFilled).disabled(userViewModel.isAuthenticating)
                     .alert("Some error occurred.", isPresented: $errorOccurred) {
-                        Button("Ok", role: .cancel, action: {}) 
+                        Button("Ok", role: .cancel, action: {
+                            errorOccurred = false
+                        })
                     }
                 
             }

@@ -28,7 +28,7 @@ struct swiftui_tutorialApp: App {
                 if (user.userIsAuthenticatedAndSynced) {
                     NotesPage().environmentObject(user)
                 } else {
-                    LoginScreen()
+                    SignUpScreen()
                 }
             }
             

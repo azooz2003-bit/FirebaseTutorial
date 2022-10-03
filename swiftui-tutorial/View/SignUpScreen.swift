@@ -15,6 +15,7 @@ struct SignUpScreen: View {
     @State var textFieldFilled = false
     @State var isAuthenticatedAndSynced = false
     @State var errorOccurred = false
+    @State var goToLogin = false
     
     var body: some View {
         NavigationView {
@@ -33,28 +34,51 @@ struct SignUpScreen: View {
                 
                 Divider().padding(.leading).padding(.trailing)
                 
-                NavigationLink(destination: NotesPage(), isActive: $isAuthenticatedAndSynced) {
+                NavigationLink(destination: NotesPage().environmentObject(userViewModel), isActive: $isAuthenticatedAndSynced) {
+                    EmptyView()
+                }.navigationBarBackButtonHidden()
+                
+                NavigationLink(destination: LoginScreen().environmentObject(userViewModel), isActive: $goToLogin) {
                     EmptyView()
                 }
                 
-                Button(action: {
-                    DispatchQueue.main.sync {
-                        userViewModel.signUp(email: email, password: password) { noError in
-                            errorOccurred = !noError
+                
+                
+                Group {
+                    Button(action: {
+                        
+                        userViewModel.signUp(email: email, password: password) { success in
+                            if success {
+                                isAuthenticatedAndSynced = true
+                            } else {
+                                errorOccurred = true
+                            }
                         }
-                    }
+                                            
+                    }) {
+                        if (userViewModel.isAuthenticating) {
+                            ProgressView()
+                        } else {
+                            Label("Proceed", systemImage: "chevron.right.circle.fill").font(.system(size: 23))
+                        }
+                    }.padding(.init(top: 50, leading: 0, bottom: 0, trailing: 0))
+                        .alert("Some error occurred.", isPresented: $errorOccurred) {
+                            Button("Ok", role: .cancel, action: {
+                                errorOccurred = false
+                            })
+                        }
                     
-                    isAuthenticatedAndSynced = userViewModel.userIsAuthenticatedAndSynced
-                }) {
-                    if (userViewModel.isAuthenticating) {
-                        ProgressView()
-                    } else {
-                        Label("Proceed", systemImage: "chevron.right.circle.fill").font(.system(size: 23))
-                    }
-                }.padding(.init(top: 50, leading: 0, bottom: 0, trailing: 0))
-                    .alert("Some error occurred.", isPresented: $errorOccurred) {
-                        Button("Ok", role: .cancel, action: {})
-                    }
+                    Button(action: {
+                        goToLogin = true
+                    }) {
+                        
+                        Label("Login Instead", systemImage: "chevron.left.circle.fill").font(.system(size: 23))
+                        
+                    }.padding(.init(top: 50, leading: 0, bottom: 0, trailing: 0))
+                }
+                
+                
+                
             }
         }
         

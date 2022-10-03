@@ -15,9 +15,6 @@ class Notes: ObservableObject {
         self.notes = []
     }
     
-    func append(text: String) {
-        notes.append(Note(text: text, id: notes.endIndex + 1))
-        
-    }
+    
     
 }

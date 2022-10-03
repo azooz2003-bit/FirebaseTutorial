@@ -24,7 +24,7 @@ class UserViewModel: ObservableObject {
         auth.currentUser != nil // if it equals nil then the user is not authenticated
     }
     var userIsAuthenticatedAndSynced: Bool { // here we check if it's both synced(user data has been retrieved from Firebase) and authenticated
-        user != nil && userIsAuthenticated
+        user != nil && userIsAuthenticated // IF USER OBJECT INITIALIZED AND AUTHENTICATED
     }
     
     
@@ -33,39 +33,44 @@ class UserViewModel: ObservableObject {
         
         auth.signIn(withEmail: email, password: password) { [weak self] result, error in
             // these variables are retrieved from Firebase for what we call the "completion", we will use them to set the closures, and handle error appropriately. Weak self is stated to allow instances to be released, like in the case of the result and error instances, and prevent an endless memory cycle.
-            guard result != nil, error == nil else { // "used to transfer program control out of scope when certain conditions are not met", in this case to exit the function
+            if result == nil || error != nil {
+                self?.isAuthenticating = false
                 completion(false)
                 return
-            }
-            // guard is rly simple, the exact opposite of an if statement. It essentially says "if not ___". In this case if result is == to nil, meaning the boolean is false, it would execute the empty return. Otherwise, it would move on to the code after.
-            DispatchQueue.main.async {
+            } else {
+                completion(true)
+                self?.add(User(uuid: (self?.uuid)!))
                 self?.sync()
-            } // we used "async" to ensure that we're not blocking the code after it from running, so that we can perform two tasks simultaneously, FYI: this can slow performance, and can lead to the "race condition": when an app is dependent on order of code execution.
+                self?.isAuthenticating = false
+            }
+            
+            // guard is rly simple, the exact opposite of an if statement. It essentially says "if not ___". In this case if result is == to nil, meaning the boolean is false, it would execute the empty return. Otherwise, it would move on to the code after.
+            // we used "async" to ensure that we're not blocking the code after it from running, so that we can perform two tasks simultaneously, FYI: this can slow performance, and can lead to the "race condition": when an app is dependent on order of code execution.
         }
         
-        isAuthenticating = false
-        completion(true)
+        
 
     }
     
     func signUp(email: String, password: String, completion: @escaping (Bool) -> Void) {
         isAuthenticating = true
-
-        auth.createUser(withEmail: email, password: password) { [weak self] result, error in
-            guard result != nil, error == nil else {
+        
+        
+        self.auth.createUser(withEmail: email, password: password) { [weak self] result, error in
+            
+            if error != nil {
+                self!.isAuthenticating = false
                 completion(false)
                 return
-            }
-            DispatchQueue.main.async {
+            } else {
+                completion(true)
                 self?.add(User(uuid: (self?.uuid)!))
                 self?.sync()
+                self?.isAuthenticating = false
             }
-            
+              
         }
         
-        isAuthenticating = false
-        completion(true)
-
     }
     
     func signOut(completion: @escaping (Bool) -> Void) {
@@ -81,19 +86,26 @@ class UserViewModel: ObservableObject {
     }
     
     private func sync() {
-        guard userIsAuthenticated else { return }
+        if !userIsAuthenticated {
+            return
+        }
         db.collection("users").document(self.uuid!).getDocument { (document, error) in
-            guard document != nil, error == nil else { return } // allows us to perform an early exit from the function like this
+            print(document!)
+            if (document == nil || error != nil) {
+                return
+            }
             do {
                 try self.user = document!.data(as: User.self)
             } catch {
-                print("Sync error: \(error)")
+                print("SYNC ERROR: \(error)")
             }
         }
     }
     
     func add(_ user: User) { // _ represents an unnamed parameter in swift, but here we're omitting the argument label by adding _. So that we can just use add(someUser) instead of add(user: someUser)
-        guard userIsAuthenticated else { return }
+        if !userIsAuthenticated {
+            return
+        }
         do {
             let _ = try db.collection("users").document(self.uuid!).setData(from: user) // firestore is smart enough to do all the formatting for us, that's why we're passing in a custom User object
             // in this case we're using _ to represent an unnamed variable, or one we don't care about naming
@@ -102,14 +114,16 @@ class UserViewModel: ObservableObject {
         }
     }
     
-    /**
+    // NOT IMPORTANT
     func update() {
-        guard userIsAuthenticatedAndSynced else { return } // to ensure we have pulled the data from the database
+        if !userIsAuthenticatedAndSynced {
+            return
+        } // to ensure we have pulled the data from the database
         do {
             let _ = try db.collection("users").document(self.uuid!).setData(from: user)
         } catch {
             print("error updating")
         }
     }
-     */
+    
 }

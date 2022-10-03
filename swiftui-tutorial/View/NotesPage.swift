@@ -16,15 +16,17 @@ struct NotesPage: View {
     @State var isEmpty = false
     
     var body: some View {
-        let notes = userViewModel.user!.notes
+        let notes = userViewModel.user?.notes
                 
         VStack {
             Text("MyNotes").font(.system(size: 40, design: .rounded)).bold()
             ScrollView {
-                ForEach(notes.notes, id: \.self.id) { note in
-//                    Text("as")
-                    Card(text: note.text)
-                    
+                if notes != nil {
+                    ForEach(notes!, id: \.self.id) { note in
+    //                    Text("as")
+                        Card(text: note.text)
+                        
+                    }
                 }
             }
             
@@ -43,8 +45,8 @@ struct NotesPage: View {
                     if (newNote.isEmpty) {
                         isEmpty = true
                     } else {
-                        notes.append(text: newNote)
-                        userViewModel.add(userViewModel.user!)
+                        userViewModel.user?.append(text: newNote)
+                        userViewModel.add((userViewModel.user!))
                         newNote = ""
                     }
                                         

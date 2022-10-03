@@ -7,15 +7,18 @@
 
 import Foundation
 
-struct User {
+struct User: Codable {
     
     var uuid: String
-    var notes: Notes
+    var notes: [Note]
     
     init(uuid: String) {
         self.uuid = uuid
-        self.notes = Notes()
+        self.notes = []
     }
     
+    mutating func append(text: String) {
+        notes.append(Note(text: text, id: notes.endIndex + 1))        
+    }
     
 }

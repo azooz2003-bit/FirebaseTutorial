@@ -12,9 +12,9 @@ struct User: Codable {
     var uuid: String
     var notes: [Note]
     
-    init(uuid: String) {
+    init(uuid: String, notes: [Note]) {
         self.uuid = uuid
-        self.notes = []
+        self.notes = notes
     }
     
     mutating func append(text: String) {

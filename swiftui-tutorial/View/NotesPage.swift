@@ -16,18 +16,20 @@ struct NotesPage: View {
     @State var isEmpty = false
     
     var body: some View {
-        let notes = userViewModel.user?.notes
+        let user = userViewModel.user
                 
         VStack {
             Text("MyNotes").font(.system(size: 40, design: .rounded)).bold()
             ScrollView {
-                if notes != nil {
-                    ForEach(notes!, id: \.self.id) { note in
-    //                    Text("as")
-                        Card(text: note.text)
-                        
-                    }
+                
+                ForEach((user?.notes ?? []), id: \.self.id) { note in
+                    
+                    Card(text: note.text)
+                    
                 }
+                
+                
+                
             }
             
             HStack {
@@ -46,7 +48,8 @@ struct NotesPage: View {
                         isEmpty = true
                     } else {
                         userViewModel.user?.append(text: newNote)
-                        userViewModel.add((userViewModel.user!))
+                        
+                        userViewModel.add()
                         newNote = ""
                     }
                                         

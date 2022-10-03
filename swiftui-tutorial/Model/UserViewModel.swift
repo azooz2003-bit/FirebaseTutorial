@@ -29,6 +29,9 @@ class UserViewModel: ObservableObject {
     
     
     func signIn(email: String, password: String, completion: @escaping (Bool) -> Void) { //ADD CLOSURE
+        signOut() { success in
+            
+        }
         isAuthenticating = true
         
         auth.signIn(withEmail: email, password: password) { [weak self] result, error in
@@ -39,8 +42,9 @@ class UserViewModel: ObservableObject {
                 return
             } else {
                 completion(true)
-                self?.add(User(uuid: (self?.uuid)!))
+                print((self?.uuid)!)
                 self?.sync()
+                //print(self!.user)
                 self?.isAuthenticating = false
             }
             
@@ -53,6 +57,9 @@ class UserViewModel: ObservableObject {
     }
     
     func signUp(email: String, password: String, completion: @escaping (Bool) -> Void) {
+        signOut() { success in
+            
+        }
         isAuthenticating = true
         
         
@@ -64,8 +71,9 @@ class UserViewModel: ObservableObject {
                 return
             } else {
                 completion(true)
-                self?.add(User(uuid: (self?.uuid)!))
+                self?.add()
                 self?.sync()
+                print(self?.user)
                 self?.isAuthenticating = false
             }
               
@@ -76,7 +84,7 @@ class UserViewModel: ObservableObject {
     func signOut(completion: @escaping (Bool) -> Void) {
         do {
             try auth.signOut()
-            self.user = nil
+            self.user = User(uuid: "0", notes: [])
             completion(true)
         } catch {
             // we can return a "closure" here to initiate an alert in the view that calls this function
@@ -87,27 +95,33 @@ class UserViewModel: ObservableObject {
     
     private func sync() {
         if !userIsAuthenticated {
+            print("pre-sync abort")
             return
         }
         db.collection("users").document(self.uuid!).getDocument { (document, error) in
             print(document!)
             if (document == nil || error != nil) {
+                print("Error pre-sync")
                 return
             }
             do {
-                try self.user = document!.data(as: User.self)
+                var data = document!.data()
+                self.user?.uuid = data!["uuid"] as! String
+                self.user?.notes = data!["notes"] as! [Note]
+                print(try document!.data(as: User.self))
             } catch {
                 print("SYNC ERROR: \(error)")
             }
         }
     }
     
-    func add(_ user: User) { // _ represents an unnamed parameter in swift, but here we're omitting the argument label by adding _. So that we can just use add(someUser) instead of add(user: someUser)
+    func add() { // _ represents an unnamed parameter in swift, but here we're omitting the argument label by adding _. So that we can just use add(someUser) instead of add(user: someUser)
         if !userIsAuthenticated {
+            print("pre-add abort")
             return
         }
         do {
-            let _ = try db.collection("users").document(self.uuid!).setData(from: user) // firestore is smart enough to do all the formatting for us, that's why we're passing in a custom User object
+            let _ = try db.collection("users").document(self.uuid!).setData(from: User(uuid: (self.uuid)!,  notes: (self.user?.notes) ?? [])) // firestore is smart enough to do all the formatting for us, that's why we're passing in a custom User object
             // in this case we're using _ to represent an unnamed variable, or one we don't care about naming
         } catch {
             print("Error adding")

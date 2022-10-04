@@ -14,7 +14,6 @@ import SwiftUI
 class UserViewModel: ObservableObject {
     @Published var user: User? // will be set to nil if there's no actual data in it
     @Published var isAuthenticating: Bool = false
-    @Published var synced = false
     
     private let auth = Auth.auth()
     private let db = Firestore.firestore()

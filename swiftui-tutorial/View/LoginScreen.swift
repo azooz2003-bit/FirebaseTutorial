@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct LoginScreen: View {
-    //StateObject: used when the data needs to be stored inside of the view, so that when another view is redrawn, this object's data isn't reset, SAFER
-    //ObservedObject: used when the data is stored outside of the view so when the view is redrawn, we won't lose the data
+    //StateObject: allows us to closely track an object to see if any changes occurred with the data then redraw/ update the frontend BUT used when the data needs to be stored inside of the view, so that when another view is redrawn, this object's data isn't reset, SAFER
+    //ObservedObject: allows us to closely track an object to see if any changes occurred with the data then redraw/ update the frontend BUT used when the data is stored outside of the view so when the view is redrawn, we won't lose the data
     @StateObject var userViewModel = UserViewModel()
     
     @State var email = ""
